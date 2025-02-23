@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+    --mat-mdc-theme-primary: #B52C2D;
+    --mat-table-background-color: #B52C2D;
+  }
+  
+  .mdc-data-table__content tr td {
+    background-color: white !important; 
+    color: black !important;
+    border: 1px solid;
+  }
+  
+  .mdc-data-table__content tr:hover {
+    background-color: #f5f5f5 !important;
+  }
+  

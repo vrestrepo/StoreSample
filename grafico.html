@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #chart-container {
+            width: 80%;
+            margin: auto;
+        }
+        svg {
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Gráfico de barras</h2>
+    <label for="data-input">Source data:</label>
+    <input type="text" id="data-input" placeholder="4,8,15,16" value="4,8,15,16">
+    <button onclick="updateChart()">Update data</button>
+    
+    <div id="chart-container">
+        <svg width="800" height="400"></svg>
+    </div>
+
+    <script>
+        const svg = d3.select("svg");
+        const width = +svg.attr("width");
+        const height = +svg.attr("height");
+        const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        function updateChart() {
+            const inputData = document.getElementById("data-input").value;
+            const data = inputData.split(',').map(d => parseInt(d.trim())).filter(d => !isNaN(d));
+            
+            if (data.length === 0){
+				return;
+			}
+            
+            svg.selectAll("*").remove();
+            
+            const xScale = d3.scaleLinear()
+                .domain([0, d3.max(data)])
+                .range([0, width - margin.left - margin.right]);
+
+            const yScale = d3.scaleBand()
+                .domain(d3.range(data.length))
+                .range([margin.top, height - margin.bottom])
+                .padding(0.2);
+
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", margin.left)
+                .attr("y", (d, i) => yScale(i))
+                .attr("width", d => xScale(d))
+                .attr("height", yScale.bandwidth())
+                .attr("fill", (d, i) => color(i));
+
+            svg.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .attr("x", d => margin.left + xScale(d) + 5)
+                .attr("y", (d, i) => yScale(i) + yScale.bandwidth() / 2)
+                .attr("dy", "0.35em")
+                .text(d => d)
+                .style("fill", "black");
+        }
+    </script>
+</body>
+</html>

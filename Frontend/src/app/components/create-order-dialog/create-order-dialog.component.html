@@ -1,0 +1,109 @@
+<h2 mat-dialog-title>Crear nueva orden</h2>
+<mat-dialog-content [formGroup]="orderForm">
+  <form [formGroup]="orderForm">
+    <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Empleado</mat-label>
+          <mat-select formControlName="empId">
+            <mat-option *ngFor="let employee of employees" [value]="employee.empId">
+              {{ employee.fullName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+        <mat-form-field appearance="fill">
+          <mat-label>Transportista</mat-label>
+          <mat-select formControlName="shipperId">
+            <mat-option *ngFor="let shipper of shippers" [value]="shipper.shipperId">
+              {{ shipper.companyName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="grid-container">
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nombre del Destinatario</mat-label>
+        <input matInput formControlName="shipName">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="shipAddress">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="shipCity">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>País</mat-label>
+        <input matInput formControlName="shipCountry">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Orden</mat-label>
+        <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
+        <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #orderDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha Requerida</mat-label>
+        <input matInput [matDatepicker]="requiredDatePicker" formControlName="requiredDate">
+        <mat-datepicker-toggle matSuffix [for]="requiredDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #requiredDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de Envío</mat-label>
+        <input matInput [matDatepicker]="shippedDatePicker" formControlName="shippedDate">
+        <mat-datepicker-toggle matSuffix [for]="shippedDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #shippedDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Flete</mat-label>
+        <input matInput type="number" formControlName="freight">
+      </mat-form-field>
+    </div>
+
+    <h3>Detalles de la Orden</h3>
+    
+    <div formArrayName="orderDetails">
+      <div *ngFor="let item of orderDetails.controls; let i = index" [formGroupName]="i" class="grid-container">
+        
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Producto</mat-label>
+          <mat-select formControlName="productId">
+            <mat-option *ngFor="let product of products" [value]="product.productId">
+              {{ product.productName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Precio Unitario</mat-label>
+          <input matInput type="number" formControlName="unitPrice">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="qty">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Descuento</mat-label>
+          <input matInput type="number" formControlName="discount" min="0" max="100" step="0.01">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button color="primary" (click)="submitOrder()" [disabled]="orderForm.invalid">Guardar</button>
+</mat-dialog-actions>
